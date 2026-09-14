@@ -1,0 +1,10 @@
+api.controller = function($rootScope) {
+	var c = this;
+	c.selectHall = function(hallId) {
+		$rootScope.$broadcast('hallSelected', hallId);
+		var el = document.getElementById('booking-form-anchor');
+		if (el) {
+			el.scrollIntoView({behavior: 'smooth'});
+		}
+	};
+};

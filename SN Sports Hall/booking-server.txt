@@ -1,0 +1,47 @@
+(function() {
+	data.halls = [];
+	data.slots = [];
+
+	var hallGR = new GlideRecord('x_2141280_sports_0_sports_hall');
+	hallGR.addQuery('active', true);
+	hallGR.query();
+	while (hallGR.next()) {
+		data.halls.push({
+			sys_id: hallGR.getUniqueValue(),
+			name: hallGR.getValue('hall_name')
+		});
+	}
+
+	if (input && input.action == 'getSlots') {
+		var slotGR = new GlideRecord('x_2141280_sports_0_booking_slot');
+		slotGR.addQuery('hall', input.hallId);
+		slotGR.addQuery('status', 'available');
+		slotGR.query();
+		while (slotGR.next()) {
+			data.slots.push({
+				sys_id: slotGR.getUniqueValue(),
+				booking_date: slotGR.getDisplayValue('booking_date'),
+				start_time: slotGR.getDisplayValue('start_time'),
+				end_time: slotGR.getDisplayValue('end_time')
+			});
+		}
+	}
+
+	if (input && input.action == 'submitBooking') {
+		var bookingGR = new GlideRecord('x_2141280_sports_0_booking');
+		bookingGR.initialize();
+		bookingGR.setValue('sports_hall', input.hallId);
+		bookingGR.setValue('slot', input.slotId);
+		bookingGR.setValue('requested_by', gs.getUserID());
+		bookingGR.setValue('status', 'pending');
+		bookingGR.insert();
+
+		var slotUpdate = new GlideRecord('x_2141280_sports_0_booking_slot');
+		if (slotUpdate.get(input.slotId)) {
+			slotUpdate.setValue('status', 'booked');
+			slotUpdate.update();
+		}
+
+		data.message = 'Booking submitted successfully! Awaiting approval.';
+	}
+})();

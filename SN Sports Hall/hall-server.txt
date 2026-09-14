@@ -1,0 +1,15 @@
+(function() {
+	data.halls = [];
+	var hallGR = new GlideRecord('x_2141280_sports_0_sports_hall');
+	hallGR.addQuery('active', true);
+	hallGR.query();
+	while (hallGR.next()) {
+		data.halls.push({
+			sys_id: hallGR.getUniqueValue(),
+			name: hallGR.getValue('hall_name'),
+			location: hallGR.getValue('location'),
+			capacity: hallGR.getValue('capacity'),
+			rate: hallGR.getValue('hour_rate')
+		});
+	}
+})();

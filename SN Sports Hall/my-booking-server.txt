@@ -1,0 +1,23 @@
+(function() {
+	data.bookings = [];
+	var gr = new GlideRecord('x_2141280_sports_0_booking');
+	gr.addQuery('requested_by', gs.getUserID());
+	gr.orderByDesc('sys_created_on');
+	gr.query();
+	while (gr.next()) {
+		var slotText = '';
+		var slotGR = new GlideRecord('x_2141280_sports_0_booking_slot');
+		if (slotGR.get(gr.getValue('slot'))) {
+			slotText = slotGR.getDisplayValue('booking_date') + ' | ' +
+			           slotGR.getDisplayValue('start_time') + ' - ' +
+			           slotGR.getDisplayValue('end_time');
+		}
+		data.bookings.push({
+			number: gr.getValue('number'),
+			hall: gr.getDisplayValue('sports_hall'),
+			slot: slotText,
+			status: gr.getValue('status'),
+			charges: gr.getValue('total_charges')
+		});
+	}
+})();

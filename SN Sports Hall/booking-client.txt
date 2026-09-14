@@ -1,0 +1,26 @@
+api.controller = function($scope) {
+	var c = this;
+	c.selectedHall = '';
+	c.selectedSlot = '';
+	c.message = '';
+
+	$scope.$on('hallSelected', function(evt, hallId) {
+		c.selectedHall = String(hallId);
+		c.loadSlots();
+	});
+
+	c.loadSlots = function() {
+		c.server.get({action: 'getSlots', hallId: c.selectedHall}).then(function(r) {
+			c.data.slots = r.data.slots;
+		});
+	};
+
+	c.submitBooking = function() {
+		c.server.get({action: 'submitBooking', hallId: c.selectedHall, slotId: c.selectedSlot}).then(function(r) {
+			c.message = r.data.message;
+			c.selectedHall = '';
+			c.selectedSlot = '';
+			c.data.slots = [];
+		});
+	};
+};

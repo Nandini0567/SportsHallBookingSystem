@@ -1,0 +1,38 @@
+<div class="panel panel-default">
+  <div class="panel-heading"><h3>My Bookings</h3></div>
+  <div class="panel-body">
+    <table class="table" ng-if="data.bookings.length > 0">
+      <thead>
+        <tr>
+          <th>Booking #</th>
+          <th>Hall</th>
+          <th>Slot</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr ng-repeat="b in data.bookings">
+          <td>{{b.number}}</td>
+          <td>{{b.hall}}</td>
+          <td>{{b.slot}}</td>
+          <td>
+           <span
+  ng-class="{
+    'badge': true,
+    'badge-warning': b.status=='pending',
+    'badge-success': b.status=='approved' || b.status=='confirmed',
+    'badge-danger': b.status=='rejected' || b.status=='cancelled'
+  }"
+  style="padding:4px 8px; border-radius:4px; color:white;"
+  ng-style="{
+    'background-color': b.status=='pending' ? '#f0ad4e' : (b.status=='approved' || b.status=='confirmed' ? '#5cb85c' : '#d9534f')
+  }">
+  {{b.status}}
+</span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <p ng-if="data.bookings.length == 0">You have no bookings yet.</p>
+  </div>
+</div>

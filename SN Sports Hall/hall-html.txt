@@ -1,0 +1,15 @@
+<div class="panel panel-default">
+  <div class="panel-heading"><h3>Available Sports Halls</h3></div>
+  <div class="panel-body">
+    <div class="row" ng-repeat="hall in data.halls" style="margin-bottom:10px; padding-bottom:10px; border-bottom:1px solid #eee;">
+      <div class="col-sm-3"><strong>{{hall.name}}</strong></div>
+      <div class="col-sm-3">{{hall.location}}</div>
+      <div class="col-sm-2">Capacity: {{hall.capacity}}</div>
+      <div class="col-sm-2">₹{{hall.rate}}/hr</div>
+      <div class="col-sm-2"><button class="btn btn-primary btn-sm" ng-click="c.selectHall(hall.sys_id)">Book</button></div>
+    </div>
+    <div ng-if="data.halls.length == 0">
+      <p>No halls found.</p>
+    </div>
+  </div>
+</div>
